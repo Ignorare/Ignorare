@@ -1,0 +1,11 @@
+FROM scratch AS rust
+
+IGNORE /target
+
+FROM rust AS ignorare
+
+IGNORE .ignoraretest
+
+FROM ignorare
+
+EXPORT .gitignore

@@ -1,0 +1,27 @@
+ignorefiles = { SOI ~ ignorefile* ~ EOI }
+
+ignorefile = { from_statement ~ (comment | newline | ignore_statement)* ~ export_statement? ~ newline* }
+
+identifier = { ASCII_ALPHA_LOWER* }
+
+from_alias = { "AS" ~ whitespace* ~ identifier }
+from_statement = { "FROM" ~ whitespace* ~ identifier ~ whitespace* ~ from_alias? ~ newline? }
+
+// Supported Statements
+statement = { ignore_statement | export_statement }
+
+ignore_statement = { "IGNORE" ~ whitespace ~ path ~ newline? }
+export_statement = { "EXPORT" ~ whitespace ~ path ~ newline? }
+
+// Paths, with and without double quotes
+unquoted_path = { (!whitespace ~ !newline ~ ANY)+ }
+double_quoted_string = { "\"" ~ (escape_sequence | (!"\"" ~ ANY))* ~ "\"" }
+escape_sequence = { "\\" ~ ANY }
+path = { double_quoted_string | unquoted_path }
+
+// Support comments using the # symbol, much like shellscripts and Dockerfiles
+comment = { "#" ~ (!newline ~ ANY)* ~ newline? }
+
+// Misc.
+whitespace = _{ " " | "\t" }
+newline = _{ "\r\n" | "\n" }
