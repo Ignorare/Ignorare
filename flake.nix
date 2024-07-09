@@ -51,6 +51,12 @@
             imports = [ ];
 
             languages.rust.enable = true;
+            languages.javascript.enable = true;
+            languages.typescript.enable = true;
+
+            packages = with pkgs; [
+              tree-sitter
+            ];
           };
         };
 
